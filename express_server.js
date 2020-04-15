@@ -1,6 +1,18 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const PORT = 8080; // default port 8080
+
+app.use(bodyParser.urlencoded({extended: true}));
+
+function generateRandomString() {  
+  var string = "";
+  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for(var i = 0; i < 6; i++) {
+      string += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return string;
+}
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -25,6 +37,11 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] }
   res.render("urls_show", templateVars)
+})
+
+app.post("/urls", (req, res) => {
+  console.log(req.body);
+  res.send('200')
 })
 
 app.listen(PORT, () => {
