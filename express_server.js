@@ -28,23 +28,33 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase }
+  let templateVars = { 
+    urls: urlDatabase,
+    username: req.cookies['username'] }
   res.render("urls_index", templateVars)
 })
 
 app.post("/urls", (req, res) => {
   const string = generateRandomString();
   urlDatabase[string] = req.body.longURL;
-  let templateVars = { shortURL: string, longURL: req.body.longURL };
+  let templateVars = { 
+    shortURL: string, 
+    longURL: req.body.longURL,
+    username: req.cookies['username'] };
   res.render("urls_show", templateVars);
 })
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new")
+  let templateVars = { 
+    username: req.cookies['username'] }
+  res.render("urls_new", templateVars)
 })
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] }
+  let templateVars = { 
+    shortURL: req.params.shortURL, 
+    longURL: urlDatabase[req.params.shortURL],
+    username: req.cookies['username'] }
   res.render("urls_show", templateVars)
 })
 
@@ -52,7 +62,10 @@ app.post("/urls/:shortURL", (req, res) => {
   const id = req.params.shortURL; 
   const newURL = req.body.longURL; 
   urlDatabase[id] = newURL; 
-  let templateVars = { shortURL: id, longURL: newURL };
+  let templateVars = { 
+    shortURL: id, 
+    longURL: newURL,
+    username: req.cookies['username'] };
   res.render("urls_show", templateVars);
 })
 
@@ -67,16 +80,9 @@ app.get("/u/:shortURL", (req, res) => {
 })
 
 app.post("/login", (req, res) => {
-  // console.log(req.body.username)
   res.cookie('username', req.body.username);
   res.redirect("/urls")
-  // let templateVars = {
-  //   username: req.cookies['username']
-  // }
-  // console.log(templateVars)
 })
-
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
