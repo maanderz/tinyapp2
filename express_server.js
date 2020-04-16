@@ -67,8 +67,13 @@ app.get("/u/:shortURL", (req, res) => {
 })
 
 app.post("/login", (req, res) => {
-  res.cookie('username', req.body);
-  res.redirect(200, '/urls')
+  // console.log(req.body.username)
+  res.cookie('username', req.body.username);
+  res.redirect("/urls")
+  // let templateVars = {
+  //   username: req.cookies['username']
+  // }
+  // console.log(templateVars)
 })
 
 
