@@ -119,7 +119,8 @@ app.post("/registration", (req, res) => {
     email: req.body.email,
     password: req.body.password
   }
-  console.log('clicked', users)
+  res.cookie('user_id', randomId);
+  res.redirect("/urls")
 })
 
 app.listen(PORT, () => {
